@@ -300,11 +300,13 @@ deno test --allow-read --allow-write --watch
 ## Quick Reference for Agents
 
 ### File Permissions Required
+
 ```bash
 deno run --allow-net --allow-read --allow-write --allow-env server.js
 ```
 
 ### Module Responsibilities
+
 - `server.js`: HTTP server, routing orchestration
 - `fetch_page.js`: File discovery, parameter extraction
 - `fetch_data.js`: Data fetching orchestration, strategy management
@@ -314,6 +316,7 @@ deno run --allow-net --allow-read --allow-write --allow-env server.js
 - `sqlite_strategy.js`: SQLite database operations
 
 ### Common File Patterns
+
 ```
 pages/[route]/index.html        # Page template
 pages/[route]/get.yaml          # Data injection for GET
@@ -323,6 +326,7 @@ static/css/style.css           # Stylesheets
 ```
 
 ### Testing Commands
+
 ```bash
 # All tests
 deno test --allow-read --allow-write
@@ -340,7 +344,8 @@ deno test --coverage
 
 #### 1. Making Changes to Core Modules
 
-When modifying core modules (`fetch_data.js`, `fetch_page.js`, `handle_post.js`):
+When modifying core modules (`fetch_data.js`, `fetch_page.js`,
+`handle_post.js`):
 
 ```bash
 # 1. Run relevant tests first to ensure baseline
@@ -359,13 +364,15 @@ deno run --allow-net --allow-read --allow-write --allow-env server.js
 
 #### 2. Adding New Features
 
-1. **New Data Strategy**: Create strategy file, add to `dataStrategies` map in `server.js`
+1. **New Data Strategy**: Create strategy file, add to `dataStrategies` map in
+   `server.js`
 2. **New Route Types**: Modify `fetch_page.js` routing algorithm
 3. **New Template Features**: Update `render_page.js` and add tests
 
 #### 3. Debugging Common Issues
 
 ##### Routing Problems
+
 ```bash
 # Check page discovery
 deno test --allow-read fetch_page.test.js
@@ -375,6 +382,7 @@ curl -v http://localhost:8000/your-test-route
 ```
 
 ##### YAML Processing Issues
+
 ```bash
 # Check YAML parsing and template processing
 deno test --allow-read --allow-write fetch_data.test.js
@@ -384,6 +392,7 @@ DEBUG=true deno run --allow-net --allow-read --allow-write --allow-env server.js
 ```
 
 ##### Data Fetching Failures
+
 ```bash
 # Test specific strategy
 deno test --allow-read --allow-write fetch_data.test.js
@@ -395,6 +404,7 @@ deno run --allow-net --allow-read --allow-write --allow-env server.js
 ### Code Conventions
 
 #### 1. Module Structure
+
 ```javascript
 // Export single main function
 export async function mainFunction(config, context) {
@@ -408,6 +418,7 @@ export function _helperFunction() {
 ```
 
 #### 2. JSDoc Documentation
+
 ```javascript
 /**
  * Fetches data based on strategy configuration
@@ -421,10 +432,11 @@ export async function fetchData(config, context) {
 ```
 
 #### 3. Error Handling
+
 ```javascript
 // Always validate inputs
-if (!config || typeof config !== 'object') {
-  throw new Error('Invalid config: must be an object');
+if (!config || typeof config !== "object") {
+  throw new Error("Invalid config: must be an object");
 }
 
 // Handle async errors with try-catch
@@ -432,32 +444,33 @@ try {
   const result = await riskyOperation();
   return result;
 } catch (error) {
-  console.error('Operation failed:', error);
+  console.error("Operation failed:", error);
   throw error; // Re-throw for caller to handle
 }
 ```
 
 #### 4. Testing Patterns
+
 ```javascript
 // Test file structure
-Deno.test('Module Name - specific behavior', async () => {
+Deno.test("Module Name - specific behavior", async () => {
   // Arrange
-  const input = { /* test data */ };
-  const expected = { /* expected result */ };
-  
+  const input = {/* test data */};
+  const expected = {/* expected result */};
+
   // Act
   const result = await functionUnderTest(input);
-  
+
   // Assert
   assertEquals(result, expected);
 });
 
 // Test error cases
-Deno.test('Module Name - error handling', async () => {
+Deno.test("Module Name - error handling", async () => {
   await assertRejects(
     () => functionUnderTest(invalidInput),
     Error,
-    'Expected error message'
+    "Expected error message",
   );
 });
 ```
@@ -465,17 +478,20 @@ Deno.test('Module Name - error handling', async () => {
 ### Common Development Tasks
 
 #### Adding a New Page Type
+
 1. Create directory in `/pages`
 2. Add `index.html` and optional `get.yaml`/`post.yaml`
 3. Add tests in `fetch_page.test.js` for new routing logic
 
 #### Adding a New Data Strategy
+
 1. Create strategy file following `request_strategy.js` pattern
 2. Add comprehensive tests
 3. Import in `server.js` and add to `dataStrategies` map
 4. Update documentation
 
 #### Fixing Performance Issues
+
 1. Profile with `console.time()` around slow operations
 2. Check for unnecessary file reads in loops
 3. Consider caching in strategy implementations
@@ -484,6 +500,7 @@ Deno.test('Module Name - error handling', async () => {
 ### Troubleshooting Guide
 
 #### Server Won't Start
+
 ```bash
 # Check Deno version
 deno --version
@@ -496,24 +513,28 @@ deno info deps.ts
 ```
 
 #### Routes Not Working
+
 1. Verify directory structure matches expected pattern
 2. Check file permissions on pages directory
 3. Ensure `index.html` exists in route directories
 4. Test with `fetch_page.test.js`
 
 #### Templates Not Rendering
+
 1. Check Handlebars syntax in templates
 2. Verify layout files exist in `/templates/layouts/`
 3. Check data structure being passed to templates
 4. Enable debug logging to see template context
 
 #### Data Not Fetching
+
 1. Verify `fetch_data` configuration in YAML
 2. Check network connectivity for external APIs
 3. Ensure proper permissions (`--allow-net`)
 4. Test strategies individually with unit tests
 
 #### POST Requests Failing
+
 1. Verify `post.yaml` exists and is valid YAML
 2. Check form data parsing logic in `handle_post.js`
 3. Ensure POST endpoint has corresponding `index.html`
@@ -522,6 +543,7 @@ deno info deps.ts
 ### Environment Setup
 
 #### Development Environment
+
 ```bash
 # Install Deno (if not already installed)
 curl -fsSL https://deno.land/x/install/install.sh | sh
@@ -535,12 +557,15 @@ alias dev-server="deno run --allow-net --allow-read --allow-write --allow-env se
 ```
 
 #### IDE Configuration
+
 Recommended VS Code extensions:
+
 - Deno language server
 - Better Handlebars
 - YAML support
 
 Configure `.vscode/settings.json`:
+
 ```json
 {
   "deno.enable": true,

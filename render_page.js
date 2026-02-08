@@ -111,8 +111,10 @@ export async function renderPage(path, query = {}, log, dataStrategies) {
     }
 
     // Check if this is a pure HTML file (contains doctype)
-    const isPureHtml = pageContent.trim().toLowerCase().startsWith('<!doctype html');
-    
+    const isPureHtml = pageContent.trim().toLowerCase().startsWith(
+      "<!doctype html",
+    );
+
     if (isPureHtml) {
       // Serve pure HTML files directly without template processing
       log({
@@ -120,7 +122,7 @@ export async function renderPage(path, query = {}, log, dataStrategies) {
         message: `Serving pure HTML file directly`,
         data: { path },
       });
-      
+
       return new Response(pageContent, {
         headers: { "content-type": "text/html" },
       });

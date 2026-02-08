@@ -1,6 +1,7 @@
 # Deno Web Server with Handlebars
 
-A file-based web server using Deno and Handlebars templating with dynamic routing, data injection, and modular architecture.
+A file-based web server using Deno and Handlebars templating with dynamic
+routing, data injection, and modular architecture.
 
 ## Project Structure
 
@@ -39,7 +40,8 @@ fake-php/
 
 ## Features
 
-- **File-based routing** from `/pages` directory with automatic parameter extraction
+- **File-based routing** from `/pages` directory with automatic parameter
+  extraction
 - **URL parameters** using bracketed folder names `[paramName]`
 - **Query parameter parsing** and injection
 - **Handlebars templating** with layouts and partials
@@ -85,13 +87,15 @@ fake-php/
 
 - URL query strings parsed and injected
 - Example: `/123?name=Alice` → `{ query: { name: 'Alice' } }`
-- Combined with params: `{ params: { userId: '123' }, query: { name: 'Alice' } }`
+- Combined with params:
+  `{ params: { userId: '123' }, query: { name: 'Alice' } }`
 
 ### POST Request Handling
 
 - POST requests only allowed for endpoints with `post.yaml` in same directory
 - Form data parsed from JSON, URL-encoded, or multipart formats
-- `post.yaml` processed with Handlebars templates using `params`, `query`, and `formData`
+- `post.yaml` processed with Handlebars templates using `params`, `query`, and
+  `formData`
 - Returns JSON responses instead of HTML
 - Security: Only accepts POST from same endpoint as `index.html`
 
