@@ -1,0 +1,4 @@
+fetch_data:
+  type: request
+  key: computer
+  url: https://api.restful-api.dev/objects/{{params.id}}

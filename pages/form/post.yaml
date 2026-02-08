@@ -1,0 +1,52 @@
+# Form submission processing
+# This YAML defines how POST requests to /form are processed
+
+# Process the form data and return it with additional context
+processedData:
+  name: "{{formData.name}}"
+  age: "{{formData.age}}"
+  email: "{{formData.email}}"
+  message: "{{formData.message}}"
+  submittedAt: "{{timestamp}}"
+  status: "processed"
+
+# Send data using strategies (example with request strategy)
+send_data:
+  - type: request
+    key: emailConfirmation
+    url: "https://httpbin.org/post" # Using httpbin for testing
+    method: POST
+    headers:
+      Content-Type: "application/json"
+      User-Agent: "DenoWebServer/1.0"
+    body:
+      formType: "contact"
+      submittedData:
+        name: "{{formData.name}}"
+        age: "{{formData.age}}"
+        email: "{{formData.email}}"
+        message: "{{formData.message}}"
+      metadata:
+        timestamp: "{{timestamp}}"
+        userAgent: "{{formData.userAgent}}"
+  - type: request
+    key: logEntry
+    url: "https://httpbin.org/put" # Another endpoint for logging
+    method: PUT
+    body:
+      action: "form_submission"
+      endpoint: "/form"
+      data:
+        name: "{{formData.name}}"
+        age: "{{formData.age}}"
+        email: "{{formData.email}}"
+
+# Response configuration
+response:
+  success: true
+  message: "Form processed successfully"
+  receivedFields:
+    - name
+    - age
+    - email
+    - message

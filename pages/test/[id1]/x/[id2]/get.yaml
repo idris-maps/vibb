@@ -1,0 +1,1 @@
+value: ID1 is {{params.id1}}, ID2 is {{params.id2}} and name is {{query.name}}
